@@ -7,7 +7,7 @@
   },
 "scripts": {
     "start": "node app.js",
-    "bolsonaro": "nodemon app.js",
+    "dev": "nodemon app.js",
     "i" : "npm install"
   }
 }
