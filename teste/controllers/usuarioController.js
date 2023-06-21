@@ -1,13 +1,9 @@
-const connection = require('../models/db');
+const usuarioModel = require('../models/usuarioModel');
+
 
 var cadastrar = function (req, res) {
     const dados = req.body.dados;
-    const nome = dados.nome;
-    const email = dados.email;
-    const senha = dados.senha;
-
-    const sql = 'INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)';
-    connection.query(sql, [nome, email, senha], (err, results) => {
+    usuarioModel.cadastrar(dados, (err, results) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -18,11 +14,7 @@ var cadastrar = function (req, res) {
 
 var entrar = function (req, res) {
     const dados = req.body.dados;
-    const email = dados.email;
-    const senha = dados.senha;
-
-    const sql = 'SELECT * FROM usuario WHERE email = ? AND senha = ?';
-    connection.query(sql, [email, senha], (err, results) => {
+    usuarioModel.entrar(dados, (err, results) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -40,8 +32,7 @@ var entrar = function (req, res) {
 }
 
 var listar = function (req, res) {
-    const sql = 'SELECT * FROM usuario';
-    connection.query(sql, (err, results) => {
+    usuarioModel.listar((err, results) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -51,8 +42,7 @@ var listar = function (req, res) {
 }
 
 var count = function (req, res) {
-    const sql = 'SELECT COUNT(*) AS total FROM usuario';
-    connection.query(sql, (err, results) => {
+    usuarioModel.count((err, results) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
