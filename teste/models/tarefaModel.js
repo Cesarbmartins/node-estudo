@@ -5,16 +5,28 @@ var cadastrarTarefa = function (dados, callback) {
     const descricao = dados.descricao;
     const data = dados.data;
 
-    const sql = 'INSERT INTO tarefa (nome, descricao, data) VALUES (?, ?, ?)';
+    const sql = 'INSERT INTO tarefa (nome, descricao, data_conclusao) VALUES (?, ?, ?)';
     connection.query(sql, [nome, descricao, data], callback);
 }
 
 var listarTarefas = function (callback) {
-   const sql = 'SELECT * FROM tarefa';
-   connection.query(sql, callback);
+    const sql = 'SELECT * FROM tarefa';
+    connection.query(sql, callback);
+}
+
+var concluirTarefa = function (id, data, callback) {
+    const sql = 'UPDATE tarefa SET data_conclusao = ? WHERE id = ?';
+    connection.query(sql, [data, id], callback)
+}
+
+var deletarTarefa = function (id, callback) {
+    const sql = 'DELETE FROM tarefa WHERE id = ?';
+    connection.query(sql, [id], callback);
 }
 
 module.exports = {
     cadastrarTarefa,
-    listarTarefas
+    listarTarefas,
+    concluirTarefa,
+    deletarTarefa
 }
