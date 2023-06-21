@@ -14,6 +14,11 @@ var listarTarefas = function (callback) {
     connection.query(sql, callback);
 }
 
+var editar = function (id, nome, descricao, callback) {
+    const sql = 'UPDATE tarefa set nome = ?, descricao = ? WHERE id = ?';
+    connection.query(sql, [nome, descricao, id,callback]);
+}
+
 var concluirTarefa = function (id, data, callback) {
     const sql = 'UPDATE tarefa SET data_conclusao = ? WHERE id = ?';
     connection.query(sql, [data, id], callback)
@@ -28,5 +33,6 @@ module.exports = {
     cadastrarTarefa,
     listarTarefas,
     concluirTarefa,
-    deletarTarefa
+    deletarTarefa,
+    editar
 }

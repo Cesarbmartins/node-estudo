@@ -31,9 +31,24 @@ var concluirTarefa = function(req, res){
             console.log(err);
             res.status(500).send('Erro ao concluir tarefa!');
          } else {
+            console.log('Alterado com sucesso!')
             res.send('/tarefa/listar');
          }
-    })
+    });
+}
+
+var editar = function(req,res){
+    const id = req.params.id;
+    const nome = req.body.nome;
+    const descricao = req.body.descricao;
+    tarefaModel.editar(id, nome, descricao, function(err, result){
+       if(err){
+        console.log(err);
+        res.status(500).send('Erro ao editar a tarefa!');
+       } else {
+        res.send('/tarefa/listar');
+       }
+    });
 }
 
 var deletarTarefa = function (req, res) {
@@ -52,5 +67,6 @@ module.exports = {
     cadastrarTarefa,
     listarTarefas,
     concluirTarefa,
-    deletarTarefa
+    deletarTarefa,
+    editar
 }
