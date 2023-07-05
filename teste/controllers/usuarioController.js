@@ -1,7 +1,7 @@
 const usuarioModel = require('../models/usuarioModel');
 
 
-var cadastrar = function (req, res) {
+const cadastrar = function (req, res) {
     const dados = req.body.dados;
     usuarioModel.cadastrar(dados, (err, results) => {
         if (err) {
@@ -12,7 +12,7 @@ var cadastrar = function (req, res) {
     });
 }
 
-var entrar = function (req, res) {
+const entrar = function (req, res) {
     const dados = req.body.dados;
     usuarioModel.entrar(dados, (err, results) => {
         if (err) {
@@ -31,7 +31,7 @@ var entrar = function (req, res) {
     });
 }
 
-var listar = function (req, res) {
+const listar = function (req, res) {
     usuarioModel.listar((err, results) => {
         if (err) {
             res.status(400).json({ error: err.message });
@@ -41,7 +41,7 @@ var listar = function (req, res) {
     });
 }
 
-var count = function (req, res) {
+const count = function (req, res) {
     usuarioModel.count((err, results) => {
         if (err) {
             res.status(400).json({ error: err.message });

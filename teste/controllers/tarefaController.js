@@ -1,57 +1,80 @@
 const tarefaModel = require("../models/tarefaModel");
+const usuarioModel = require("../models/usuarioModel");
 
-var cadastrarTarefa = function (req, res) {
-    const dados = req.body;
-    tarefaModel.cadastrarTarefa(dados, function (err, result) {
+const cadastrarTarefa = function (req, res) {
+    const nome = req.body.nome;
+    const descricao = req.body.descricao;
+    const data = req.body.data;
+    const responsavel = req.body.responsavel
+    tarefaModel.cadastrarTarefa(nome, descricao, data, responsavel, function (err, result) {
         if (err) {
             console.log(err);
             res.status(500).send('Erro ao cadastrar tarefa!');
         } else {
             res.redirect('/tarefa/listar');
+            res.status(200);
         }
     });
 }
 
-var listarTarefas = function (req, res) {
+const atribuirTarefa = function (req, res) {
+    const id = req.params.id;
+    const responsavel = req.body.responsavel;
+    tarefaModel.atribuirTarefa(id, responsavel, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Erro ao atribuir tarefa!');
+        } else {
+            res.redirect('/tarefa/listar');
+            res.status(200);
+        }
+    });
+}
+
+const listarTarefas = function (req, res) {
     tarefaModel.listarTarefas(function (err, result) {
         if (err) {
             console.log(err);
             res.status(500).send('Erro ao listar tarefas!');
         } else {
             console.log(result)
+            res.status(200).json(result);
+
         }
     });
 }
 
-var concluirTarefa = function(req, res){
+const concluirTarefa = function (req, res) {
     const id = req.params.id;
     const data = req.body.data;
-    tarefaModel.concluirTarefa(id,data, function(err, result){
-         if(err) {
+    tarefaModel.concluirTarefa(id, data, function (err, result) {
+        if (err) {
             console.log(err);
             res.status(500).send('Erro ao concluir tarefa!');
-         } else {
+        } else {
             console.log('Alterado com sucesso!')
-            res.send('/tarefa/listar');
-         }
+            res.redirect('/tarefa/listar');
+            res.status(200);
+        }
     });
 }
 
-var editar = function(req,res){
+const editar = function (req, res) {
     const id = req.params.id;
     const nome = req.body.nome;
     const descricao = req.body.descricao;
-    tarefaModel.editar(id, nome, descricao, function(err, result){
-       if(err){
-        console.log(err);
-        res.status(500).send('Erro ao editar a tarefa!');
-       } else {
-        res.send('/tarefa/listar');
-       }
+    tarefaModel.editar(id, nome, descricao, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Erro ao editar a tarefa!');
+        } else {
+            res.redirect('/tarefa/listar');
+            res.status(200);
+        }
     });
 }
 
-var deletarTarefa = function (req, res) {
+const deletarTarefa = function (req, res) {
     const id = req.params.id;
     tarefaModel.deletarTarefa(id, function (err, result) {
         if (err) {
@@ -59,14 +82,95 @@ var deletarTarefa = function (req, res) {
             res.status(500).send('Erro ao excluir tarefa!');
         } else {
             res.redirect('/tarefa/listar');
+            res.status(200);
         }
     });
 }
 
+const listarConcluidas = function (req, res) {
+    tarefaModel.listarConcluidas(function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Erro ao exibir!');
+        } else {
+            res.status(200).json(result)
+        }
+    })
+}
+
+const listarNaoConcluidas = function (req, res) {
+    tarefaModel.listarNaoConcluidas(function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Erro ao exibir!');
+        } else {
+            res.status(200).json(result)
+        }
+    })
+}
+
+const listarTarefasPorUsuario = function (req, res) {
+    const id = req.params.id;
+
+    tarefaModel.listarTarefasPorUsuario(id, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Erro ao exibir!');
+        } else {
+            res.status(200).json(result)
+        }
+    })
+}
+
+const listarTarefasNaoConcluidasUsuario = function (req, res) {
+    const id = req.params.id;
+
+    tarefaModel.listarTarefasNaoConcluidasUsuario(id, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Erro ao exibir!');
+        } else {
+            res.status(200).json(result)
+        }
+    })
+}
+
+const listarTarefasPorUsuarioConcluidas = function (req, res) {
+    const id = req.params.id;
+
+    tarefaModel.listarTarefasPorUsuarioConcluidas(id, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Erro ao exibir');
+        } else {
+            res.status(200).json(result)
+        }
+    })
+}
+
+const listarTarefasAgrupadaPorUsuarios = function (req, res) {
+    tarefaModel.listarTarefasAgrupadaPorUsuarios(function (err, result) {
+
+        if (err) {
+            console.log(err);
+            res.status(500).send('Erro ao exibir');
+        } else {
+            res.status(200).json(result)
+        }
+    })
+}
+
 module.exports = {
     cadastrarTarefa,
+    editar,
     listarTarefas,
     concluirTarefa,
     deletarTarefa,
-    editar
+    listarConcluidas,
+    listarNaoConcluidas,
+    atribuirTarefa,
+    listarTarefasPorUsuario,
+    listarTarefasNaoConcluidasUsuario,
+    listarTarefasPorUsuarioConcluidas,
+    listarTarefasAgrupadaPorUsuarios
 }
