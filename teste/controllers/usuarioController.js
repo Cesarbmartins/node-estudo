@@ -2,14 +2,29 @@ const usuarioModel = require('../models/usuarioModel');
 
 
 const cadastrar = function (req, res) {
-    const dados = req.body.dados;
-    usuarioModel.cadastrar(dados, (err, results) => {
+    var nome = req.body.nome;
+    var email = req.body.email;
+    var senha = req.body.senha;
+    usuarioModel.verificarEmailExistente(email, (err, result) => {
         if (err) {
-            res.status(400).json({ error: err.message });
-            return;
+            console.log(err);
+            res.status(500).status('Erro ao verificar');
         }
-        res.status(200).json({ message: 'Dados inseridos com sucesso' });
-    });
+
+        if (result > 0) {
+            res.status(400).send('O email já consta no sistema');
+        } else {
+
+            usuarioModel.cadastrar(nome, email, senha, (err, results) => {
+                if (err) {
+                    res.status(400).json({ error: err.message });
+                    return;
+                }
+                res.status(200).json({ message: 'Dados inseridos com sucesso' });
+
+            });
+        }
+    })
 }
 
 const entrar = function (req, res) {

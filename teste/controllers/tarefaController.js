@@ -5,8 +5,10 @@ const cadastrarTarefa = function (req, res) {
     const nome = req.body.nome;
     const descricao = req.body.descricao;
     const data = req.body.data;
-    const responsavel = req.body.responsavel
-    tarefaModel.cadastrarTarefa(nome, descricao, data, responsavel, function (err, result) {
+    const data_limite = req.body.data_limite;
+    const responsavel = req.body.responsavel;
+        
+    tarefaModel.cadastrarTarefa(nome, descricao, data_limite,data, responsavel, function (err, result) {
         if (err) {
             console.log(err);
             res.status(500).send('Erro ao cadastrar tarefa!');
@@ -160,6 +162,20 @@ const listarTarefasAgrupadaPorUsuarios = function (req, res) {
     })
 }
 
+const atribuirDataLimite = function (req, res) {
+    const id = req.params.id;
+    const data_limite = req.body.data_limite;
+    tarefaModel.atribuirDataLimite(id,data_limite,function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Erro ao atribuir a data')
+        } else {
+            res.status(200)
+            res.redirect('/tarefa/listar')
+        }
+    })
+}
+
 module.exports = {
     cadastrarTarefa,
     editar,
@@ -172,5 +188,6 @@ module.exports = {
     listarTarefasPorUsuario,
     listarTarefasNaoConcluidasUsuario,
     listarTarefasPorUsuarioConcluidas,
-    listarTarefasAgrupadaPorUsuarios
+    listarTarefasAgrupadaPorUsuarios,
+    atribuirDataLimite
 }

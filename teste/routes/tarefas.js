@@ -13,6 +13,7 @@ router.get('/listarTarefasPorUsuario/:id', tarefaController.listarTarefasPorUsua
 router.get('/listarTarefasAgrupadaPorUsuarios', tarefaController.listarTarefasAgrupadaPorUsuarios);
 router.get('/listarTarefasPorUsuarioConcluidas/:id', tarefaController.listarTarefasPorUsuarioConcluidas);
 router.put('/atribuirTarefa/:id', tarefaController.atribuirTarefa);
+router.put('/atribuirDataLimite/:id', tarefaController.atribuirDataLimite);
 
         
 module.exports = router;
